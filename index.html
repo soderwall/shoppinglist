@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inköpslista 🛒</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            --card-bg: rgba(255, 255, 255, 0.07);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-primary: #818cf8;
+            --accent-secondary: #c084fc;
+            --accent-success: #34d399;
+            --badge-bg: rgba(129, 140, 248, 0.15);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a5b4fc, #f472b6, #fb7185);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Progress Card */
+        .progress-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-stats {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-secondary);
+        }
+
+        .progress-bar-bg {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #818cf8, #c084fc, #34d399);
+            border-radius: 999px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Add Item Form */
+        .add-item-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .add-item-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .add-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+        }
+
+        .add-select {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .add-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .add-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Filter & Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-bottom: 24px;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e2e8f0;
+            padding-left: 4px;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Item Row */
+        .item-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .item-card:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .item-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .checkbox-custom {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-custom::after {
+            content: '✓';
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 900;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+
+        .item-text {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            color: #f1f5f9;
+        }
+
+        .item-note {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .delete-item-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+
+        .delete-item-btn:hover {
+            color: #f87171;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        /* Checked State */
+        .item-card.completed {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+            opacity: 0.65;
+        }
+
+        .item-card.completed .checkbox-custom {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+        }
+
+        .item-card.completed .checkbox-custom::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .item-card.completed .item-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 16px 12px 40px;
+            }
+            .header-title {
+                font-size: 1.8rem;
+            }
+            .add-item-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="header-title">Inköpslista 🛍️</h1>
+            <p class="header-subtitle">Smakfull matlagning & färska råvaror</p>
+        </header>
+
+        <!-- Progress Card -->
+        <div class="progress-card">
+            <div class="progress-header">
+                <span class="progress-title">
+                    <span>⚡</span> Framgång
+                </span>
+                <span class="progress-stats" id="progress-text">0 av 0 klarade (0%)</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Add Item Form -->
+        <div class="add-item-card">
+            <input type="text" id="new-item-input" class="add-input" placeholder="Lägg till en ny vara (t.ex. Smör, Avokado)..." autocomplete="off">
+            <div class="add-item-row">
+                <select id="new-item-category" class="add-select">
+                    <option value="Asiatiskt & Skafferi">🍜 Asiatiskt & Skafferi</option>
+                    <option value="Frukt & Grönt">🥦 Frukt & Grönt</option>
+                    <option value="Mejeri & Ägg">🥛 Mejeri & Ägg</option>
+                    <option value="Övrigt">🛒 Övrigt</option>
+                </select>
+                <button id="add-btn" class="add-btn">
+                    <span>+</span> Lägg till
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls / Filters -->
+        <div class="controls">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Alla</button>
+                <button class="filter-btn" data-filter="active">Kvar</button>
+                <button class="filter-btn" data-filter="completed">Klara</button>
+            </div>
+            <button id="reset-btn" class="action-btn">Återställ alla</button>
+        </div>
+
+        <!-- Categories and Items Container -->
+        <div id="shopping-list-container">
+            <!-- Rendered via JS -->
+        </div>
+
+        <footer>
+            Sparas automatiskt i din webbläsare ✨
+        </footer>
+    </div>
+
+    <script>
+        const initialItems = [
+            // Asiatiskt & Skafferi
+            { id: '1', title: 'Frysta udonnudlar', note: 'ca 8 paket/portioner eller vetenudlar', category: 'Asiatiskt & Skafferi', completed: false },
+            { id: '2', title: 'Kokosgrädde', note: '', category: 'Asiatiskt & Skafferi', completed: false },
+            { id: '3', title: 'Buljongpulver', note: '2 msk', category: 'Asiatiskt & Skafferi', completed: false },
+            { id: '4', title: 'Risvinäger', note: '2 msk', category: 'Asiatiskt & Skafferi', completed: false },
+            { id: '5', title: 'Chilinolja', note: '2–4 msk', category: 'Asiatiskt & Skafferi', completed: false },
+            { id: '6', title: 'Sesamolja', note: '1 msk', category: 'Asiatiskt & Skafferi', completed: false },
+
+            // Frukt & Grönt
+            { id: '7', title: 'Broccoli', note: 'ca 3–4 stånd, att rosta i ugnen med lite olja och salt', category: 'Frukt & Grönt', completed: false },
+            { id: '8', title: 'Salladslök', note: '2 knippor', category: 'Frukt & Grönt', completed: false },
+            { id: '9', title: 'Tomater', note: '', category: 'Frukt & Grönt', completed: false },
+            { id: '10', title: 'Äpplen', note: '', category: 'Frukt & Grönt', completed: false },
+            { id: '11', title: 'Päron', note: '', category: 'Frukt & Grönt', completed: false },
+            { id: '12', title: 'Kiwi', note: '', category: 'Frukt & Grönt', completed: false },
+
+            // Mejeri & Ägg
+            { id: '13', title: 'Ägg', note: 'ett 12-pack, att koka eller steka till servering', category: 'Mejeri & Ägg', completed: false },
+            { id: '14', title: 'Mjölk', note: '2 paket', category: 'Mejeri & Ägg', completed: false },
+            { id: '15', title: 'Kvarg', note: '2 x 500g', category: 'Mejeri & Ägg', completed: false }
+        ];
+
+        const categoryIcons = {
+            'Asiatiskt & Skafferi': '🍜',
+            'Frukt & Grönt': '🥦',
+            'Mejeri & Ägg': '🥛',
+            'Övrigt': '🛒'
+        };
+
+        const categoryOrder = ['Asiatiskt & Skafferi', 'Frukt & Grönt', 'Mejeri & Ägg', 'Övrigt'];
+
+        let items = [];
+        let activeFilter = 'all';
+
+        function loadItems() {
+            const stored = localStorage.getItem('shopping_list_items');
+            if (stored) {
+                try {
+                    items = JSON.parse(stored);
+                } catch (e) {
+                    items = [...initialItems];
+                }
+            } else {
+                items = [...initialItems];
+            }
+        }
+
+        function saveItems() {
+            localStorage.setItem('shopping_list_items', JSON.stringify(items));
+        }
+
+        function toggleItem(id) {
+            items = items.map(item => item.id === id ? { ...item, completed: !item.completed } : item);
+            saveItems();
+            render();
+        }
+
+        function deleteItem(id, event) {
+            event.stopPropagation();
+            items = items.filter(item => item.id !== id);
+            saveItems();
+            render();
+        }
+
+        function addItem() {
+            const input = document.getElementById('new-item-input');
+            const categorySelect = document.getElementById('new-item-category');
+            const rawText = input.value.trim();
+
+            if (!rawText) return;
+
+            // Optional note parsing e.g. "Ost (hårdost)"
+            let title = rawText;
+            let note = '';
+            const match = rawText.match(/^(.*?)\s*\((.*?)\)$/);
+            if (match) {
+                title = match[1];
+                note = match[2];
+            }
+
+            const newItem = {
+                id: Date.now().toString(),
+                title: title,
+                note: note,
+                category: categorySelect.value,
+                completed: false
+            };
+
+            items.push(newItem);
+            saveItems();
+            input.value = '';
+            render();
+        }
+
+        function resetAll() {
+            if (confirm('Vill du återställa inköpslistan till ursprungsläget?')) {
+                items = initialItems.map(item => ({ ...item }));
+                saveItems();
+                render();
+            }
+        }
+
+        function updateProgress() {
+            const total = items.length;
+            const completedCount = items.filter(i => i.completed).length;
+            const percentage = total === 0 ? 0 : Math.round((completedCount / total) * 100);
+
+            document.getElementById('progress-text').innerText = `${completedCount} av ${total} klarade (${percentage}%)`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+        }
+
+        function render() {
+            updateProgress();
+            const container = document.getElementById('shopping-list-container');
+            container.innerHTML = '';
+
+            // Filter items
+            let filtered = items;
+            if (activeFilter === 'active') {
+                filtered = items.filter(i => !i.completed);
+            } else if (activeFilter === 'completed') {
+                filtered = items.filter(i => i.completed);
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Inga varor att visa 🍃</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group by category
+            const grouped = {};
+            categoryOrder.forEach(cat => grouped[cat] = []);
+
+            filtered.forEach(item => {
+                if (!grouped[item.category]) {
+                    grouped[item.category] = [];
+                }
+                grouped[item.category].push(item);
+            });
+
+            // Render each category
+            Object.keys(grouped).forEach(cat => {
+                const catItems = grouped[cat];
+                if (catItems.length === 0) return;
+
+                const section = document.createElement('div');
+                section.className = 'category-section';
+
+                const icon = categoryIcons[cat] || '🛒';
+                section.innerHTML = `
+                    <h2 class="category-title">
+                        <span>${icon}</span> ${cat}
+                    </h2>
+                    <div class="item-list" id="cat-list-${cat}"></div>
+                `;
+
+                const listEl = section.querySelector('.item-list');
+
+                catItems.forEach(item => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = `item-card ${item.completed ? 'completed' : ''}`;
+                    itemEl.onclick = () => toggleItem(item.id);
+
+                    itemEl.innerHTML = `
+                        <div class="item-content">
+                            <div class="checkbox-custom"></div>
+                            <div>
+                                <div class="item-text">${item.title}</div>
+                                ${item.note ? `<div class="item-note">${item.note}</div>` : ''}
+                            </div>
+                        </div>
+                        <button class="delete-item-btn" title="Ta bort" onclick="deleteItem('${item.id}', event)">✕</button>
+                    `;
+
+                    listEl.appendChild(itemEl);
+                });
+
+                container.appendChild(section);
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('add-btn').addEventListener('click', addItem);
+        document.getElementById('new-item-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addItem();
+        });
+        document.getElementById('reset-btn').addEventListener('click', resetAll);
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                activeFilter = e.target.dataset.filter;
+                render();
+            });
+        });
+
+        // Initialize
+        loadItems();
+        render();
+    </script>
+</body>
+</html>
