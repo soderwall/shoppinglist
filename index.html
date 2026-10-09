@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Inköpslista 🛒</title>
+    <title>Inköpslistor 🛒</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -47,7 +47,6 @@
             overflow-x: hidden;
         }
 
-        /* Ambient Glow Background Blobs */
         .bg-glow-1 {
             position: fixed;
             top: -100px;
@@ -83,7 +82,7 @@
         header {
             text-align: center;
             margin-top: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .header-title {
@@ -105,437 +104,164 @@
             font-weight: 500;
         }
 
-        /* Progress Card */
-        .progress-card {
+        /* Featured Current Week Card */
+        .featured-card {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-xl);
-            padding: 20px 24px;
-            margin-bottom: 22px;
+            padding: 28px;
+            margin-bottom: 32px;
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .progress-card::before {
+        .featured-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 2px;
+            height: 3px;
             background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
         }
 
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .progress-title {
+        .badge-current {
+            align-self: flex-start;
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            color: var(--accent-success);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
             font-weight: 700;
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .progress-stats {
-            font-size: 0.9rem;
+        .featured-title {
+            font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #c084fc, #f472b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #f8fafc;
         }
 
-        .progress-bar-bg {
-            height: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
-            overflow: hidden;
-            position: relative;
-            padding: 2px;
+        .featured-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #818cf8, #c084fc, #34d399);
-            border-radius: 999px;
-            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
-        }
-
-        /* Add Item Form */
-        .add-item-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-xl);
-            padding: 16px;
-            margin-bottom: 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: var(--shadow);
-        }
-
-        .add-item-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .add-input {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            padding: 14px 16px;
-            color: #fff;
-            font-size: 1rem; /* 16px avoids iOS auto-zoom */
-            outline: none;
-            transition: all 0.2s ease;
-            min-height: 50px;
-        }
-
-        .add-input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
-            background: rgba(15, 23, 42, 0.85);
-        }
-
-        .add-select {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 1rem; /* 16px avoids iOS auto-zoom */
-            outline: none;
-            cursor: pointer;
-            min-height: 50px;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            background-size: 16px;
-            padding-right: 38px;
-        }
-
-        .add-btn {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            padding: 12px 22px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
+        .primary-btn {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            min-height: 50px;
-            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.35);
-            white-space: nowrap;
-        }
-
-        .add-btn:active {
-            transform: scale(0.96);
-            opacity: 0.9;
-        }
-
-        /* Filter & Controls */
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .filter-buttons {
-            display: flex;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 4px;
+            gap: 10px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 24px;
             border-radius: 14px;
-            border: 1px solid var(--card-border);
-            flex: 1;
-            max-width: 320px;
-        }
-
-        .filter-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px 12px;
-            border-radius: 10px;
-            font-size: 0.9rem;
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            min-height: 40px;
+            font-size: 1.05rem;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            align-self: flex-start;
+            margin-top: 8px;
         }
 
-        .filter-btn.active {
-            background: linear-gradient(135deg, #818cf8, #a855f7);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.3);
+        .primary-btn:active {
+            transform: scale(0.97);
         }
 
-        .action-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--card-border);
-            color: var(--text-muted);
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-height: 44px;
-        }
-
-        .action-btn:active {
-            transform: scale(0.96);
-            background: rgba(239, 68, 68, 0.25);
-            color: #f87171;
-        }
-
-        /* Category Section */
-        .category-section {
-            margin-bottom: 24px;
-        }
-
-        .category-title {
-            font-size: 1.15rem;
+        /* Weeks Section */
+        .section-title {
+            font-size: 1.25rem;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            color: #f1f5f9;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #f1f5f9;
-            padding-left: 4px;
-            letter-spacing: -0.01em;
         }
 
-        .item-list {
+        .weeks-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
-        /* Item Row */
-        .item-card {
+        .week-card {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 16px 18px;
+            padding: 18px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-main);
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            user-select: none;
-            min-height: 60px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .item-card:active {
-            transform: scale(0.98);
+        .week-card:hover, .week-card:active {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .item-content {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex: 1;
-        }
-
-        .checkbox-custom {
-            width: 26px;
-            height: 26px;
-            border-radius: 9px;
-            border: 2px solid rgba(255, 255, 255, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            flex-shrink: 0;
-            background: rgba(15, 23, 42, 0.3);
-        }
-
-        .checkbox-custom::after {
-            content: '✓';
-            color: #0f172a;
-            font-size: 16px;
-            font-weight: 900;
-            opacity: 0;
-            transform: scale(0.3) rotate(-10deg);
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .item-icon {
-            font-size: 1.35rem;
-            line-height: 1;
-            flex-shrink: 0;
-            transition: transform 0.2s ease;
-        }
-
-        .item-details {
+        .week-info {
             display: flex;
             flex-direction: column;
+            gap: 4px;
         }
 
-        .item-text {
-            font-size: 1.05rem;
-            font-weight: 600;
-            line-height: 1.3;
-            transition: all 0.2s ease;
-            color: #f8fafc;
-        }
-
-        .item-note {
-            font-size: 0.83rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-            font-weight: 400;
-        }
-
-        .delete-item-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.4);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            cursor: pointer;
+        .week-name {
+            font-weight: 700;
             font-size: 1.1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            margin-left: 10px;
-            flex-shrink: 0;
+            gap: 8px;
         }
 
-        .delete-item-btn:active {
-            color: #f87171;
-            background: rgba(239, 68, 68, 0.25);
-            border-color: rgba(239, 68, 68, 0.4);
-            transform: scale(0.9);
-        }
-
-        /* Checked State */
-        .item-card.completed {
-            background: rgba(15, 23, 42, 0.45);
-            border-color: rgba(255, 255, 255, 0.06);
-            opacity: 0.65;
-        }
-
-        .item-card.completed .checkbox-custom {
-            background: var(--accent-success);
-            border-color: var(--accent-success);
-            box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
-        }
-
-        .item-card.completed .checkbox-custom::after {
-            opacity: 1;
-            transform: scale(1) rotate(0deg);
-        }
-
-        .item-card.completed .item-text {
-            text-decoration: line-through;
+        .week-date {
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
-        .item-card.completed .item-icon {
-            filter: grayscale(0.5);
-            opacity: 0.8;
+        .arrow-icon {
+            font-size: 1.2rem;
+            color: var(--accent-primary);
+            transition: transform 0.2s ease;
         }
 
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 48px 20px;
-            color: var(--text-muted);
-            font-size: 1rem;
-            background: var(--card-bg);
-            border-radius: var(--radius-xl);
-            border: 1px dashed var(--card-border);
+        .week-card:hover .arrow-icon {
+            transform: translateX(4px);
         }
 
-        .empty-state-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        /* Confetti Container */
-        #confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 999;
-            overflow: hidden;
-        }
-
-        .confetti-particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 3px;
-            animation: fall 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        @keyframes fall {
-            0% {
-                opacity: 1;
-                transform: translateY(-20px) rotate(0deg) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(100vh) rotate(720deg) scale(0.5);
-            }
-        }
-
-        /* Footer */
         footer {
-            margin-top: 36px;
+            margin-top: 40px;
             text-align: center;
             color: var(--text-muted);
             font-size: 0.88rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
 
         @media (max-width: 480px) {
             .header-title {
                 font-size: 1.95rem;
             }
-            .add-item-row {
-                flex-direction: row;
+            .featured-card {
+                padding: 20px;
             }
-            .add-btn {
-                padding: 12px 16px;
+            .primary-btn {
+                width: 100%;
             }
         }
     </style>
@@ -543,321 +269,40 @@
 <body>
     <div class="bg-glow-1"></div>
     <div class="bg-glow-2"></div>
-    <div id="confetti-container"></div>
 
     <div class="container">
         <header>
-            <h1 class="header-title">Inköpslista 🛍️</h1>
-            <p class="header-subtitle">Smakfull matlagning & färska råvaror</p>
+            <h1 class="header-title">Mina Inköpslistor 🛒</h1>
+            <p class="header-subtitle">Välj vecka för att visa och hantera din inköpslista</p>
         </header>
 
-        <!-- Progress Card -->
-        <div class="progress-card">
-            <div class="progress-header">
-                <span class="progress-title">
-                    <span>⚡</span> Framgång
-                </span>
-                <span class="progress-stats" id="progress-text">0 av 0 klarade (0%)</span>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progress-bar"></div>
-            </div>
+        <!-- Current / Latest Week Highlight -->
+        <div class="featured-card">
+            <span class="badge-current">⚡ Aktuell Vecka</span>
+            <div class="featured-title">Vecka 41</div>
+            <p class="featured-desc">Handla mat och ingredienser för den här veckans måltider.</p>
+            <a href="vecka-41.html" class="primary-btn">
+                Öppna Vecka 41 ➔
+            </a>
         </div>
 
-        <!-- Add Item Form -->
-        <div class="add-item-card">
-            <input type="text" id="new-item-input" class="add-input" placeholder="Lägg till en ny vara (t.ex. Smör, Avokado)..." autocomplete="off">
-            <div class="add-item-row">
-                <select id="new-item-category" class="add-select">
-                    <option value="Asiatiskt & Skafferi">🍜 Skafferi</option>
-                    <option value="Frukt & Grönt">🥦 Frukt & Grönt</option>
-                    <option value="Mejeri & Ägg">🥛 Mejeri & Ägg</option>
-                    <option value="Övrigt">🛒 Övrigt</option>
-                </select>
-                <button id="add-btn" class="add-btn">
-                    <span>+</span> Lägg till
-                </button>
-            </div>
-        </div>
-
-        <!-- Controls / Filters -->
-        <div class="controls">
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Alla</button>
-                <button class="filter-btn" data-filter="active">Kvar</button>
-                <button class="filter-btn" data-filter="completed">Klara</button>
-            </div>
-            <button id="reset-btn" class="action-btn">Återställ alla</button>
-        </div>
-
-        <!-- Categories and Items Container -->
-        <div id="shopping-list-container">
-            <!-- Rendered via JS -->
+        <!-- All Weeks List -->
+        <h2 class="section-title">📅 Alla Veckor</h2>
+        <div class="weeks-grid">
+            <a href="vecka-41.html" class="week-card">
+                <div class="week-info">
+                    <div class="week-name">
+                        <span>🛒</span> Vecka 41 (Nuvarande)
+                    </div>
+                    <div class="week-date">Oktober 2026</div>
+                </div>
+                <span class="arrow-icon">➔</span>
+            </a>
         </div>
 
         <footer>
-            Sparas automatiskt i din webbläsare ✨
+            Inköpslistor sparade per vecka ✨
         </footer>
     </div>
-
-    <script>
-        const initialItems = [
-            // Skafferi & Snacks / Övrigt
-            { id: '1', title: 'Coca cola', note: '', category: 'Övrigt', completed: false },
-            { id: '2', title: 'Popcorn', note: '', category: 'Asiatiskt & Skafferi', completed: false },
-
-            // Frukt & Grönt
-            { id: '3', title: 'Blåbär', note: '', category: 'Frukt & Grönt', completed: false },
-            { id: '4', title: 'Hallon', note: '', category: 'Frukt & Grönt', completed: false },
-            { id: '5', title: 'Isbergsallad', note: '', category: 'Frukt & Grönt', completed: false },
-            { id: '6', title: 'Mango', note: '', category: 'Frukt & Grönt', completed: false },
-
-            // Mejeri & Ägg
-            { id: '7', title: 'Kvarg', note: '', category: 'Mejeri & Ägg', completed: false },
-            { id: '8', title: 'Light creme fraiche', note: '', category: 'Mejeri & Ägg', completed: false },
-
-            // Övrigt
-            { id: '9', title: 'Vegofärs', note: '', category: 'Övrigt', completed: false }
-        ];
-
-        const itemEmojiMap = {
-            'coca cola': '🥤',
-            'popcorn': '🍿',
-            'blåbär': '🫐',
-            'hallon': '🍓',
-            'isbergsallad': '🥬',
-            'mango': '🥭',
-            'kvarg': '🥣',
-            'light creme fraiche': '🥛',
-            'creme fraiche': '🥛',
-            'vegofärs': '🌱',
-            'mjölk': '🥛',
-            'ägg': '🥚',
-            'ost': '🧀',
-            'smör': '🧈',
-            'bröd': '🍞',
-            'kaffe': '☕'
-        };
-
-        const categoryIcons = {
-            'Asiatiskt & Skafferi': '🍜',
-            'Frukt & Grönt': '🥦',
-            'Mejeri & Ägg': '🥛',
-            'Övrigt': '🛒'
-        };
-
-        const categoryOrder = ['Asiatiskt & Skafferi', 'Frukt & Grönt', 'Mejeri & Ägg', 'Övrigt'];
-
-        let items = [];
-        let activeFilter = 'all';
-
-        function getItemEmoji(title, category) {
-            const lower = title.toLowerCase().trim();
-            for (const key in itemEmojiMap) {
-                if (lower.includes(key)) {
-                    return itemEmojiMap[key];
-                }
-            }
-            return categoryIcons[category] || '🛒';
-        }
-
-        function loadItems() {
-            const stored = localStorage.getItem('shopping_list_items');
-            if (stored) {
-                try {
-                    items = JSON.parse(stored);
-                } catch (e) {
-                    items = [...initialItems];
-                }
-            } else {
-                items = [...initialItems];
-            }
-        }
-
-        function saveItems() {
-            localStorage.setItem('shopping_list_items', JSON.stringify(items));
-        }
-
-        function triggerConfetti() {
-            const container = document.getElementById('confetti-container');
-            const colors = ['#818cf8', '#c084fc', '#f472b6', '#34d399', '#fbbf24'];
-            for (let i = 0; i < 35; i++) {
-                const p = document.createElement('div');
-                p.className = 'confetti-particle';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                p.style.animationDuration = (1.8 + Math.random() * 1.5) + 's';
-                p.style.animationDelay = (Math.random() * 0.2) + 's';
-                container.appendChild(p);
-                setTimeout(() => p.remove(), 3500);
-            }
-        }
-
-        function toggleItem(id) {
-            const itemBefore = items.find(i => i.id === id);
-            items = items.map(item => item.id === id ? { ...item, completed: !item.completed } : item);
-            saveItems();
-
-            if (itemBefore && !itemBefore.completed) {
-                // If all items are now completed
-                if (items.length > 0 && items.every(i => i.completed)) {
-                    triggerConfetti();
-                }
-            }
-
-            render();
-        }
-
-        function deleteItem(id, event) {
-            event.stopPropagation();
-            items = items.filter(item => item.id !== id);
-            saveItems();
-            render();
-        }
-
-        function addItem() {
-            const input = document.getElementById('new-item-input');
-            const categorySelect = document.getElementById('new-item-category');
-            const rawText = input.value.trim();
-
-            if (!rawText) return;
-
-            let title = rawText;
-            let note = '';
-            const match = rawText.match(/^(.*?)\s*\((.*?)\)$/);
-            if (match) {
-                title = match[1];
-                note = match[2];
-            }
-
-            const newItem = {
-                id: Date.now().toString(),
-                title: title,
-                note: note,
-                category: categorySelect.value,
-                completed: false
-            };
-
-            items.push(newItem);
-            saveItems();
-            input.value = '';
-            render();
-        }
-
-        function resetAll() {
-            if (confirm('Vill du återställa inköpslistan till ursprungsläget?')) {
-                items = initialItems.map(item => ({ ...item }));
-                saveItems();
-                render();
-            }
-        }
-
-        function updateProgress() {
-            const total = items.length;
-            const completedCount = items.filter(i => i.completed).length;
-            const percentage = total === 0 ? 0 : Math.round((completedCount / total) * 100);
-
-            document.getElementById('progress-text').innerText = `${completedCount} av ${total} klarade (${percentage}%)`;
-            document.getElementById('progress-bar').style.width = `${percentage}%`;
-        }
-
-        function render() {
-            updateProgress();
-            const container = document.getElementById('shopping-list-container');
-            container.innerHTML = '';
-
-            // Filter items
-            let filtered = items;
-            if (activeFilter === 'active') {
-                filtered = items.filter(i => !i.completed);
-            } else if (activeFilter === 'completed') {
-                filtered = items.filter(i => i.completed);
-            }
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <span class="empty-state-icon">✨</span>
-                        <p>Inga varor att visa</p>
-                    </div>
-                `;
-                return;
-            }
-
-            // Group by category
-            const grouped = {};
-            categoryOrder.forEach(cat => grouped[cat] = []);
-
-            filtered.forEach(item => {
-                if (!grouped[item.category]) {
-                    grouped[item.category] = [];
-                }
-                grouped[item.category].push(item);
-            });
-
-            // Render each category
-            Object.keys(grouped).forEach(cat => {
-                const catItems = grouped[cat];
-                if (catItems.length === 0) return;
-
-                const section = document.createElement('div');
-                section.className = 'category-section';
-
-                const icon = categoryIcons[cat] || '🛒';
-                section.innerHTML = `
-                    <h2 class="category-title">
-                        <span>${icon}</span> ${cat}
-                    </h2>
-                    <div class="item-list" id="cat-list-${cat}"></div>
-                `;
-
-                const listEl = section.querySelector('.item-list');
-
-                catItems.forEach(item => {
-                    const itemEl = document.createElement('div');
-                    itemEl.className = `item-card ${item.completed ? 'completed' : ''}`;
-                    itemEl.onclick = () => toggleItem(item.id);
-
-                    const emoji = getItemEmoji(item.title, item.category);
-
-                    itemEl.innerHTML = `
-                        <div class="item-content">
-                            <div class="checkbox-custom"></div>
-                            <span class="item-icon">${emoji}</span>
-                            <div class="item-details">
-                                <div class="item-text">${item.title}</div>
-                                ${item.note ? `<div class="item-note">${item.note}</div>` : ''}
-                            </div>
-                        </div>
-                        <button class="delete-item-btn" title="Ta bort" onclick="deleteItem('${item.id}', event)">✕</button>
-                    `;
-
-                    listEl.appendChild(itemEl);
-                });
-
-                container.appendChild(section);
-            });
-        }
-
-        // Event Listeners
-        document.getElementById('add-btn').addEventListener('click', addItem);
-        document.getElementById('new-item-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addItem();
-        });
-        document.getElementById('reset-btn').addEventListener('click', resetAll);
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                activeFilter = e.target.dataset.filter;
-                render();
-            });
-        });
-
-        // Initialize
-        loadItems();
-        render();
-    </script>
 </body>
 </html>
